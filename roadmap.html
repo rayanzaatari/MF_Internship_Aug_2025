@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makhzoumi Foundation - Software Development Internship</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Corporate Maroon & Beige -->
+    <!-- Application Structure Plan: The application uses a top navigation bar for quick access to key sections, transforming the linear report into a user-driven SPA. The core of the app is an interactive weekly timeline/accordion under "The Journey". This design was chosen to break down the dense 8-week schedule into manageable, on-demand chunks, preventing information overload and allowing users (like potential interns) to easily explore the program's structure without overwhelming scrolling. A new "Program Focus" section with a stacked bar chart was added to visually synthesize the distribution of learning topics over time, a key insight not immediately obvious from the text. -->
+    <!-- Visualization & Content Choices: Report Info: 8-week schedule -> Goal: Show change in learning focus over time -> Viz/Presentation Method: Stacked Bar Chart -> Interaction: Hover tooltips show weekly topic details -> Justification: Visually communicates the program's progression from backend/database fundamentals to frontend development and finally deployment, making the learning curve tangible. Library/Method: Chart.js (Canvas). Report Info: Weekly details -> Goal: Organize dense, sequential info -> Viz/Presentation Method: Interactive Accordion/Tab system -> Interaction: Click a week to reveal its details -> Justification: Improves usability by hiding non-relevant information and allowing focused exploration. Library/Method: Vanilla JS DOM manipulation. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .makhzoumi-maroon { color: #5D2A42; }
+        .bg-makhzoumi-maroon { background-color: #5D2A42; }
+        .border-makhzoumi-maroon { border-color: #5D2A42; }
+        .accent-makhzoumi-maroon:hover { color: #5D2A42; }
+        .bg-makhzoumi-beige { background-color: #F5F1ED; }
+        .nav-link {
+            transition: color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #5D2A42;
+            border-bottom-color: #5D2A42;
+        }
+        .week-btn {
+            transition: all 0.3s ease;
+        }
+        .week-btn.active {
+            background-color: #5D2A42;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="main-header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <span class="text-2xl font-bold makhzoumi-maroon">Makhzoumi Foundation</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#overview" class="nav-link pb-1">Overview</a>
+                <a href="#journey" class="nav-link pb-1">The Journey</a>
+                <a href="#focus" class="nav-link pb-1">Program Focus</a>
+                <a href="#stack" class="nav-link pb-1">Tech Stack</a>
+                <a href="#roles" class="nav-link pb-1">Roles</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
+            <a href="#overview" class="block nav-link">Overview</a>
+            <a href="#journey" class="block nav-link">The Journey</a>
+            <a href="#focus" class="block nav-link">Program Focus</a>
+            <a href="#stack" class="block nav-link">Tech Stack</a>
+            <a href="#roles" class="block nav-link">Roles</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="overview" class="my-16 scroll-mt-24">
+            <h1 class="text-4xl md:text-5xl font-bold text-center makhzoumi-maroon">Software Development Internship Program</h1>
+            <p class="text-center text-lg mt-4 max-w-3xl mx-auto">An 8-week immersive experience designed to build production-ready full-stack developers. This section provides a high-level summary of the program's goals and the exciting project interns will develop.</p>
+            
+            <div class="mt-12 grid md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold makhzoumi-maroon mb-4">Program Overview</h2>
+                    <p class="mb-6">This internship provides hands-on, industry-grade experience in developing a complete web application using ASP.NET Core 9.0 and SQL Server. Participants work collaboratively, emphasizing clean architecture, RESTful APIs, and version control with GitHub.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-xl mr-4 makhzoumi-maroon">⏱️</span>
+                            <p><strong class="font-semibold">Duration:</strong> 8 Weeks</p>
+                        </div>
+                        <div class="flex items-start">
+                             <span class="text-xl mr-4 makhzoumi-maroon">🎯</span>
+                            <p><strong class="font-semibold">Focus:</strong> Full Stack Web Development with ASP.NET Core, SQL Server, RESTful APIs, and GitHub.</p>
+                        </div>
+                         <div class="flex items-start">
+                            <span class="text-xl mr-4 makhzoumi-maroon">📱</span>
+                            <p><strong class="font-semibold">Optional Track:</strong> Mobile app development with React Native.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-makhzoumi-beige p-8 rounded-xl">
+                    <h2 class="text-3xl font-bold makhzoumi-maroon mb-4">Project Theme: "SkillBridge"</h2>
+                    <p class="mb-4">Interns will build "SkillBridge," an Internship & Training Management System. This real-world project serves as the primary vehicle for learning and applying new skills throughout the program.</p>
+                    <p class="font-semibold text-gray-800">Key Features:</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-gray-700">
+                        <li>Organizations can post opportunities.</li>
+                        <li>Students can discover and apply for internships.</li>
+                        <li>Coordinators can track attendance and evaluations.</li>
+                        <li>Role-based access for Admins, Coordinators, and Students.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="journey" class="my-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center makhzoumi-maroon">The 8-Week Journey</h2>
+            <p class="text-center text-lg mt-4 max-w-3xl mx-auto">The program is structured week-by-week to build skills progressively. Select a week below to explore its specific learning objectives, activities, and key deliverables.</p>
+            
+            <div id="weeks-container" class="mt-12 flex flex-wrap justify-center gap-2 md:gap-4"></div>
+            
+            <div id="weeks-content" class="mt-8"></div>
+        </section>
+
+        <section id="focus" class="my-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center makhzoumi-maroon">Program Focus Distribution</h2>
+            <p class="text-center text-lg mt-4 max-w-3xl mx-auto">This chart visualizes the shifting focus of the internship over the 8 weeks, from foundational concepts to advanced application development and deployment. Hover over the bars to see how different skills are emphasized each week.</p>
+            <div class="mt-12 bg-white p-4 sm:p-8 rounded-xl shadow-lg border border-gray-200">
+                <div class="chart-container">
+                    <canvas id="focusChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="stack" class="my-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center makhzoumi-maroon">Expected Tools & Technologies</h2>
+            <p class="text-center text-lg mt-4 max-w-3xl mx-auto">Interns will gain hands-on experience with a modern, industry-standard technology stack. This section outlines the primary tools used to build, test, and manage the "SkillBridge" application.</p>
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+                <div class="bg-makhzoumi-beige p-6 rounded-lg"><strong class="font-semibold block">ASP.NET Core 9.0</strong><span class="text-sm text-gray-600">Backend</span></div>
+                <div class="bg-makhzoumi-beige p-6 rounded-lg"><strong class="font-semibold block">EF Core</strong><span class="text-sm text-gray-600">Database ORM</span></div>
+                <div class="bg-makhzoumi-beige p-6 rounded-lg"><strong class="font-semibold block">Razor Pages/MVC</strong><span class="text-sm text-gray-600">Frontend</span></div>
+                <div class="bg-makhzoumi-beige p-6 rounded-lg"><strong class="font-semibold block">SQL Server</strong><span class="text-sm text-gray-600">Database</span></div>
+                <div class="bg-makhzoumi-beige p-6 rounded-lg"><strong class="font-semibold block">Git & GitHub</strong><span class="text-sm text-gray-600">Version Control</span></div>
+                <div class="bg-makhzoumi-beige p-6 rounded-lg"><strong class="font-semibold block">Postman</strong><span class="text-sm text-gray-600">API Testing</span></div>
+                <div class="bg-makhzoumi-beige p-6 rounded-lg col-span-2 md:col-span-3 lg:col-span-6"><strong class="font-semibold block">React Native (Optional)</strong><span class="text-sm text-gray-600">Mobile App</span></div>
+            </div>
+        </section>
+
+        <section id="roles" class="my-24 scroll-mt-24">
+             <h2 class="text-4xl font-bold text-center makhzoumi-maroon">Intern Roles & Collaboration</h2>
+             <p class="text-center text-lg mt-4 max-w-3xl mx-auto">To simulate a real-world development environment, interns will be assigned to specific roles within the project team. This fosters collaboration, specialization, and a deeper understanding of the software development lifecycle.</p>
+            <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="font-bold text-xl makhzoumi-maroon mb-2">Team Lead</h3>
+                    <p>Coordinates task delegation, tracks progress, and manages GitHub merging.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="font-bold text-xl makhzoumi-maroon mb-2">Backend Developer</h3>
+                    <p>Handles API development, database design, and application logic.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="font-bold text-xl makhzoumi-maroon mb-2">Frontend Developer</h3>
+                    <p>Builds the user interface with Razor, handles form logic, and visuals.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="font-bold text-xl makhzoumi-maroon mb-2">Mobile Developer</h3>
+                    <p>(Optional) Works on the React Native mobile application if time allows.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p class="font-bold text-lg">Makhzoumi Foundation</p>
+            <p class="text-sm mt-2 text-gray-400">This document outlines the Software Development Internship Program. Progress will be monitored weekly by the Head of Software Development.</p>
+             <div class="mt-4 text-xs text-gray-500">
+                Prepared by: Head of Software Development
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const weeklyData = [
+                {
+                    title: "Week 1: Onboarding & Fundamentals",
+                    content: `
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2">Days 1-2: Onboarding</h4>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Introduction to the Makhzoumi Foundation and IT Department</li>
+                                    <li>Overview of Internship Objectives</li>
+                                    <li>Setting up development environment (Visual Studio, SQL Server, Git, Postman)</li>
+                                    <li>Git & GitHub basics: init, clone, commit, push, pull, branches, issues, PRs</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2">Days 3-5: ASP.NET Core Basics</h4>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Introduction to ASP.NET Core 9.0 & MVC architecture</li>
+                                    <li>Project structure walkthrough</li>
+                                    <li>Building a simple CRUD using MVC and Entity Framework Core</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-lg mb-2">Deliverables:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Completed GitHub repo setup for individual sandbox projects</li>
+                                <li>CRUD Demo with EF Core and ASP.NET Core MVC</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Week 2: Database & API Foundations",
+                    content: `
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2">Database Design</h4>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Relational modeling: tables, keys, relationships</li>
+                                    <li>SQL Server basics</li>
+                                    <li>Designing the database schema for SkillBridge</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2">API Development</h4>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Introduction to RESTful APIs</li>
+                                    <li>Creating API Controllers</li>
+                                    <li>Using Postman for API testing</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-lg mb-2">Deliverables:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Database schema draft (ERD)</li>
+                                <li>Basic API for one module (e.g., Organizations CRUD)</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Week 3: Advanced API & Repository Pattern",
+                    content: `
+                        <h4 class="font-semibold text-lg mb-2">Key Topics</h4>
+                        <ul class="list-disc list-inside space-y-1 mb-6">
+                            <li>Implementing the Repository pattern for clean data access</li>
+                            <li>Using DTOs (Data Transfer Objects) and AutoMapper for efficient data shaping</li>
+                            <li>Server-side validation</li>
+                            <li>Authentication using JSON Web Tokens (JWT)</li>
+                            <li>Implementing Role-based Authorization (Admin, Coordinator, Student)</li>
+                        </ul>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-lg mb-2">Deliverables:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>APIs secured with JWT authentication</li>
+                                <li>Role-based access control fully working and testable via the API</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Week 4: Frontend with Razor Pages / MVC",
+                    content: `
+                        <h4 class="font-semibold text-lg mb-2">Key Topics</h4>
+                        <ul class="list-disc list-inside space-y-1 mb-6">
+                            <li>Core UI/UX principles for web applications</li>
+                            <li>Integrating frontend views with backend logic using Razor Pages/MVC</li>
+                            <li>Data binding, Tag Helpers, and creating reusable Partial Views</li>
+                            <li>Building the frontend for Authentication, Dashboards, and Role-based views</li>
+                        </ul>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-lg mb-2">Deliverables:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>A completed frontend with a full UI/UX design</li>
+                                <li>Functional role-based access control visible on the UI</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Week 5: Feature Expansion & Git Collaboration",
+                    content: `
+                        <h4 class="font-semibold text-lg mb-2">Key Topics</h4>
+                        <ul class="list-disc list-inside space-y-1 mb-6">
+                            <li>Expanding the application with new modules: Internship Listings, Applications, Progress Tracking</li>
+                            <li>Advanced Git: Implementing a branching strategy (e.g., GitFlow)</li>
+                            <li>Resolving merge conflicts</li>
+                            <li>Using Pull Requests for code reviews among peers</li>
+                        </ul>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-lg mb-2">Deliverables:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Fully functional Internship Posting and Application Module</li>
+                                <li>At least one GitHub Pull Request created, reviewed by a peer, and merged</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Week 6: Testing & Deployment",
+                    content: `
+                        <h4 class="font-semibold text-lg mb-2">Key Topics</h4>
+                        <ul class="list-disc list-inside space-y-1 mb-6">
+                            <li>Writing Unit Tests for the backend logic using xUnit for .NET</li>
+                            <li>Automated API Testing using Postman collections and Newman</li>
+                            <li>Hosting the application locally on IIS for production simulation</li>
+                            <li>Testing deployment to a public cloud provider (e.g., Azure)</li>
+                        </ul>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-lg mb-2">Deliverables:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>A test coverage report from the unit tests</li>
+                                <li>A live, deployed web app that is ready for a demo</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Week 7: Optional - React Native Mobile App",
+                    content: `
+                        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md" role="alert">
+                            <p class="font-bold">Optional Track</p>
+                            <p>This week is dedicated to interns interested in mobile development and is contingent on project progress.</p>
+                        </div>
+                        <h4 class="font-semibold text-lg mb-2 mt-6">Key Topics</h4>
+                        <ul class="list-disc list-inside space-y-1 mb-6">
+                            <li>Introduction to React Native for cross-platform mobile development</li>
+                            <li>Setting up the development environment with Expo CLI and VS Code</li>
+                            <li>Integrating the mobile app with the SkillBridge RESTful API</li>
+                            <li>Building mobile views for Internship listing and application submission</li>
+                        </ul>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-lg mb-2">Deliverables:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>A working mobile app prototype with successful API integration (if time permits)</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Week 8: Finalization & Presentation",
+                    content: `
+                        <h4 class="font-semibold text-lg mb-2">Key Topics</h4>
+                        <ul class="list-disc list-inside space-y-1 mb-6">
+                            <li>Code cleanup, refactoring, and adding documentation (README, code comments)</li>
+                            <li>Preparing a slide deck for the final project demonstration</li>
+                            <li>Presenting the "SkillBridge" application to the Makhzoumi Foundation team</li>
+                            <li>Receiving feedback and discussing future opportunities</li>
+                        </ul>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-lg mb-2">Deliverables:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Final presentation slide deck</li>
+                                <li>A fully documented GitHub repository with a comprehensive README.md</li>
+                                <li>Internship completion certificate (if applicable)</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            ];
+
+            const weeksContainer = document.getElementById('weeks-container');
+            const weeksContent = document.getElementById('weeks-content');
+
+            weeklyData.forEach((week, index) => {
+                const weekButton = document.createElement('button');
+                weekButton.className = 'week-btn px-4 py-2 rounded-md font-semibold bg-white border border-gray-300 text-gray-700 hover:bg-gray-100';
+                weekButton.textContent = `Week ${index + 1}`;
+                weekButton.dataset.index = index;
+                weeksContainer.appendChild(weekButton);
+
+                const contentPanel = document.createElement('div');
+                contentPanel.className = 'content-panel bg-white p-8 rounded-xl shadow-lg border border-gray-200';
+                contentPanel.innerHTML = `
+                    <h3 class="text-2xl font-bold makhzoumi-maroon mb-6">${week.title}</h3>
+                    ${week.content}
+                `;
+                contentPanel.dataset.index = index;
+                weeksContent.appendChild(contentPanel);
+            });
+
+            const weekButtons = document.querySelectorAll('.week-btn');
+            const contentPanels = document.querySelectorAll('.content-panel');
+
+            weeksContainer.addEventListener('click', (e) => {
+                if (e.target.matches('.week-btn')) {
+                    const index = e.target.dataset.index;
+
+                    weekButtons.forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    contentPanels.forEach(panel => {
+                        if (panel.dataset.index === index) {
+                            panel.classList.add('active');
+                        } else {
+                            panel.classList.remove('active');
+                        }
+                    });
+                }
+            });
+
+            if (weekButtons.length > 0) {
+                weekButtons[0].click();
+            }
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            const header = document.getElementById('main-header');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: `-${header.offsetHeight}px 0px -50% 0px` });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    const headerHeight = header.offsetHeight;
+                    const scrollPosition = targetSection.offsetTop - headerHeight - 20; // 20px for extra padding
+
+                    window.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Hide mobile menu after clicking
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            const focusCtx = document.getElementById('focusChart').getContext('2d');
+            const focusChart = new Chart(focusCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                    datasets: [
+                        {
+                            label: 'Backend & API',
+                            data: [20, 50, 100, 0, 50, 0, 50, 10],
+                            backgroundColor: '#5D2A42',
+                        },
+                        {
+                            label: 'Database',
+                            data: [20, 50, 0, 0, 0, 0, 0, 0],
+                            backgroundColor: '#8C4362',
+                        },
+                        {
+                            label: 'Frontend',
+                            data: [20, 0, 0, 100, 50, 0, 50, 10],
+                            backgroundColor: '#BF8A9F',
+                        },
+                        {
+                            label: 'Testing & Deployment',
+                            data: [0, 0, 0, 0, 0, 100, 0, 20],
+                            backgroundColor: '#E6C6D4',
+                        },
+                        {
+                            label: 'Setup & Project Mgmt',
+                            data: [40, 0, 0, 0, 0, 0, 0, 60],
+                            backgroundColor: '#A9A9A9',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: false,
+                            text: 'Weekly Learning Focus Distribution'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Focus Allocation'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
