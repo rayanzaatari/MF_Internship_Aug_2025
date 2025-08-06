@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makhzoumi Foundation - Internship Implementation Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Professional Grey & Blue Accents -->
+    <!-- Application Structure Plan: This interactive document is structured as a series of collapsible accordion sections. Each main phase (Phase 1, 2, 3) is a top-level accordion item, and within each phase, individual sections (e.g., Development Environment Setup, Git Basics) are nested accordion items. This design was chosen to allow interns to easily navigate through the detailed plan, expanding only the sections relevant to their current focus, reducing visual clutter and improving information digestibility. -->
+    <!-- Visualization & Content Choices: Report Info: Step-by-step plan -> Goal: Provide clear, navigable instructions -> Viz/Presentation Method: Accordion/Collapsible sections -> Interaction: Click to expand/collapse -> Justification: Breaks down dense technical information into manageable chunks, enhancing usability and allowing users to focus on specific tasks without being overwhelmed. Library/Method: Vanilla JS for accordion logic. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F8F8;
+            color: #333;
+        }
+        .header-bg { background-color: #2C3E50; } /* Dark Blue */
+        .text-accent { color: #3498DB; } /* Bright Blue */
+        .bg-accent-light { background-color: #ECF0F1; } /* Light Grey */
+        .border-accent { border-color: #3498DB; }
+        .accordion-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .accordion-button:hover {
+            background-color: #E0E0E0;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+        .accordion-content.active {
+            max-height: 2000px; /* Increased value to ensure all content is visible */
+            padding: 1rem 1.5rem;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .accordion-icon.rotate {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="header-bg text-white py-6 shadow-md">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl font-bold">Software Development Internship: Implementation Plan</h1>
+            <p class="mt-2 text-lg opacity-90">A step-by-step guide for building the "SkillBridge" application.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <p class="text-center text-lg mb-10 max-w-3xl mx-auto">This interactive document provides a comprehensive roadmap for interns, detailing technical tasks, methodologies, and collaborative practices for the "SkillBridge" application. Click on any section to expand and view its contents.</p>
+
+        <div id="accordion-container" class="space-y-6">
+
+            <!-- Phase 1 -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200">
+                <button class="accordion-button text-xl bg-accent-light text-accent border-b border-gray-200" data-target="phase1-content">
+                    <span>1. Phase 1: Setup & Foundational Development (Weeks 1-2)</span>
+                    <svg class="accordion-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                <div id="phase1-content" class="accordion-content">
+                    <p class="mb-4">This initial phase focuses on establishing the development environment, understanding core concepts, and building the fundamental components of the application.</p>
+
+                    <!-- Sub-section 1.1 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 mb-4">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section1-1-content">
+                            <span>1.1. Development Environment Setup (Week 1, Days 1-2)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section1-1-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Prepare your local machine for full-stack development.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**Install Visual Studio:** Ensure you have Visual Studio (e.g., 2022 Community or Enterprise) installed with the ASP.NET and web development workload, and data storage and processing workload. Download from <a href="https://visualstudio.microsoft.com/downloads/" target="_blank" class="text-accent underline">visualstudio.microsoft.com/downloads/</a>.</li>
+                                <li>**Install SQL Server:** Install SQL Server (2019+ recommended) and SQL Server Management Studio (SSMS) for database management. Download SQL Server from <a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" class="text-accent underline">microsoft.com/en-us/sql-server/sql-server-downloads</a> and SSMS from <a href="https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms" target="_blank" class="text-accent underline">docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms</a>.</li>
+                                <li>**Install Git:** Download and install Git on your machine. Get it from <a href="https://git-scm.com/downloads" target="_blank" class="text-accent underline">git-scm.com/downloads</a>.</li>
+                                <li>**Install Postman:** Download and install Postman for API testing. Available at <a href="https://www.postman.com/downloads/" target="_blank" class="text-accent underline">postman.com/downloads/</a>.</li>
+                                <li>**GitHub Configuration:**
+                                    <ul class="list-disc list-inside ml-4 mt-1 space-y-1">
+                                        <li>Create a personal GitHub account if you don't have one. Sign up at <a href="https://github.com/join" target="_blank" class="text-accent underline">github.com/join</a>.</li>
+                                        <li>Configure Git with your user name and email (`git config --global user.name "Your Name"` and `git config --global user.email "your_email@example.com"`).</li>
+                                        <li>Generate SSH keys and add them to your GitHub account for secure authentication. Follow instructions at <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" class="text-accent underline">docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent</a>.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverable: Completed GitHub repo setup for individual sandbox projects.</p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-section 1.2 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 mb-4">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section1-2-content">
+                            <span>1.2. Git & GitHub Basics (Week 1, Days 1-2)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section1-2-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Master fundamental version control operations.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**Repository Initialization:** Learn `git init` to create a new local repository.</li>
+                                <li>**Cloning:** Understand `git clone <repository_url>` to get a copy of a remote repository.</li>
+                                <li>**Committing Changes:** Use `git add .` to stage changes and `git commit -m "Your meaningful message"` to record them.</li>
+                                <li>**Pushing & Pulling:** Practice `git push origin <branch_name>` to upload local commits and `git pull origin <branch_name>` to download remote changes.</li>
+                                <li>**Branching:** Create and switch between branches (`git branch <new_branch>`, `git checkout <branch_name>`).</li>
+                                <li>**Issue Tracking & Pull Requests:** Familiarize yourself with creating and managing issues on GitHub, and initiating Pull Requests (PRs) for code review.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Sub-section 1.3 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 mb-4">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section1-3-content">
+                            <span>1.3. ASP.NET Core Fundamentals & CRUD (Week 1, Days 3-5)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section1-3-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Build a basic web application with data persistence.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**ASP.NET Core 9.0 Introduction:** Understand the basic structure of an ASP.NET Core project.</li>
+                                <li>**MVC Architecture:** Grasp the Model-View-Controller pattern and its role in web development.</li>
+                                <li>**Project Structure Walkthrough:** Navigate and understand the default project folders and files.</li>
+                                <li>**Entity Framework Core:** Learn how to use EF Core for object-relational mapping (ORM) to interact with a database.</li>
+                                <li>**Simple CRUD Implementation:** Develop a basic Create, Read, Update, Delete (CRUD) application using ASP.NET Core MVC and EF Core.</li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverable: CRUD Demo with EF Core and ASP.NET Core MVC.</p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-section 1.4 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section1-4-content">
+                            <span>1.4. Database Design & Basic API Development (Week 2)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section1-4-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Design the SkillBridge database and expose initial data via RESTful APIs.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**Relational Modeling:** Design the database schema for "SkillBridge," identifying entities (e.g., Organizations, Internships, Students), attributes, and relationships (one-to-many, many-to-many).</li>
+                                <li>**SQL Server Basics:** Practice writing basic SQL queries (SELECT, INSERT, UPDATE, DELETE) and understanding data types.</li>
+                                <li>**ERD Creation:** Create an Entity-Relationship Diagram (ERD) to visualize the database schema.</li>
+                                <li>**RESTful API Introduction:** Understand the principles of REST (Representational State Transfer) and how to design API endpoints.</li>
+                                <li>**API Controller Creation:** Develop initial API controllers in ASP.NET Core to expose CRUD operations for at least one core module (e.g., Organizations).</li>
+                                <li>**Postman Testing:** Use Postman to send HTTP requests (GET, POST, PUT, DELETE) to your newly created APIs and verify responses.</li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverables: Database schema draft (ERD), Basic API for one module (e.g., Organizations CRUD).</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200">
+                <button class="accordion-button text-xl bg-accent-light text-accent border-b border-gray-200" data-target="phase2-content">
+                    <span>2. Phase 2: Core Application Development (Weeks 3-5)</span>
+                    <svg class="accordion-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                <div id="phase2-content" class="accordion-content">
+                    <p class="mb-4">This phase focuses on implementing advanced API features, building the user interface, and expanding application functionality with collaborative development practices.</p>
+
+                    <!-- Sub-section 2.1 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 mb-4">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section2-1-content">
+                            <span>2.1. Advanced API Development & Security (Week 3)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section2-1-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Enhance API robustness and implement authentication/authorization.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**Repository Pattern:** Implement the Repository pattern to abstract data access logic, promoting clean architecture and testability.</li>
+                                <li>**DTOs & AutoMapper:** Utilize Data Transfer Objects (DTOs) to shape data sent between the API and clients, and use AutoMapper to simplify object-to-object mapping.</li>
+                                <li>**Server-side Validation:** Implement data validation rules on the server-side to ensure data integrity.</li>
+                                <li>**JWT Authentication:** Integrate JSON Web Token (JWT) based authentication to secure your APIs.</li>
+                                <li>**Role-based Authorization:** Implement role-based authorization to control access to specific API endpoints based on user roles (Admin, Coordinator, Student).</li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverables: Secured APIs with JWT, Role-based access working via API.</p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-section 2.2 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 mb-4">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section2-2-content">
+                            <span>2.2. Frontend Development with Razor Pages / MVC (Week 4)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section2-2-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Build a responsive and interactive user interface.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**UI/UX Principles:** Apply fundamental UI/UX design principles to create an intuitive and user-friendly interface.</li>
+                                <li>**Razor Pages/MVC View Integration:** Connect your frontend views (Razor Pages or MVC Views) with the backend APIs to display and manipulate data.</li>
+                                <li>**Data Binding, Tag Helpers, Partial Views:** Utilize ASP.NET Core features like data binding, Tag Helpers for simplified HTML generation, and Partial Views for reusable UI components.</li>
+                                <li>**Authentication & Dashboard UI:** Develop frontend components for user login/registration, and role-specific dashboards.</li>
+                                <li>**Role-based Access Control (Frontend):** Implement logic on the frontend to conditionally display UI elements based on the authenticated user's role.</li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverables: Completed frontend with full UI/UX design and role-based access.</p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-section 2.3 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section2-3-content">
+                            <span>2.3. Feature Expansion & Git Collaboration (Week 5)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section2-3-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Expand the application's core modules and practice advanced team collaboration.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**Module Expansion:** Implement the full functionality for key modules, including Internship Listings (posting, viewing), Applications (submission, tracking), and Progress Tracking.</li>
+                                <li>**GitHub Branching Strategy:** Adopt and strictly follow a defined branching strategy (e.g., GitFlow, Feature Branch Workflow) for team development.</li>
+                                <li>**Conflict Resolution:** Practice resolving merge conflicts that arise during collaborative development.</li>
+                                <li>**Pull Requests & Code Reviews:** Actively participate in creating and reviewing Pull Requests, providing constructive feedback to peers.</li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverables: Fully functional Internship Posting and Application Module, GitHub PR with peer-reviewed merge.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200">
+                <button class="accordion-button text-xl bg-accent-light text-accent border-b border-gray-200" data-target="phase3-content">
+                    <span>3. Phase 3: Quality Assurance & Deployment (Weeks 6-8)</span>
+                    <svg class="accordion-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                <div id="phase3-content" class="accordion-content">
+                    <p class="mb-4">This final phase focuses on ensuring application quality, preparing for deployment, and presenting the completed project.</p>
+
+                    <!-- Sub-section 3.1 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 mb-4">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section3-1-content">
+                            <span>3.1. Testing & Deployment Preparation (Week 6)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section3-1-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Ensure the application is robust and ready for production.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**Unit Testing:** Write comprehensive unit tests for your backend logic using xUnit for .NET to ensure individual components function correctly.</li>
+                                <li>**API Testing:** Use Postman (and potentially Newman for automation) to perform thorough API testing, covering various scenarios and edge cases.</li>
+                                <li>**Local Hosting (IIS):** Learn to host the ASP.NET Core application locally on Internet Information Services (IIS) to simulate a production environment.</li>
+                                <li>**Cloud Deployment Testing:** Explore and test deployment procedures to a public cloud provider (e.g., Azure App Service).</li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverables: Test coverage report, Live deployed web app (demo ready).</p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-section 3.2 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 mb-4">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section3-2-content">
+                            <span>3.2. Optional: React Native Mobile App (Week 7)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section3-2-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: (Optional) Develop a mobile interface for the SkillBridge application.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**React Native Introduction:** Understand the basics of React Native for cross-platform mobile development.</li>
+                                <li>**Environment Setup:** Set up your development environment using Expo CLI or configuring VS Code for React Native. Install Expo CLI globally via npm: `npm install -g expo-cli`. More info at <a href="https://docs.expo.dev/get-started/installation/" target="_blank" class="text-accent underline">docs.expo.dev/get-started/installation/</a>.</li>
+                                <li>**API Integration:** Connect the mobile application to the existing SkillBridge RESTful APIs.</li>
+                                <li>**Mobile Views Development:** Create essential mobile views for internship listing and application submission.</li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverable: Working mobile app with API integration (if time permits).</p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-section 3.3 -->
+                    <div class="bg-gray-50 rounded-lg border border-gray-200">
+                        <button class="accordion-button text-lg font-medium text-gray-700 hover:bg-gray-100" data-target="section3-3-content">
+                            <span>3.3. Finalization & Presentation (Week 8)</span>
+                            <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div id="section3-3-content" class="accordion-content px-6 py-4">
+                            <p class="font-semibold mb-2">Objective: Prepare the project for final demonstration and document the work.</p>
+                            <h4 class="font-semibold text-gray-800 mb-2">Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>**Code Cleanup & Refactoring:** Refactor code for readability, maintainability, and adherence to coding standards.</li>
+                                <li>**Documentation:** Write clear and concise documentation, including a comprehensive `README.md` for the GitHub repository and inline code comments.</li>
+                                <li>**Slide Deck Preparation:** Create a professional slide deck for the final project demonstration.</li>
+                                <li>**Final Presentation:** Present the "SkillBridge" application to the Makhzoumi Foundation team, showcasing features, architecture, and personal contributions.</li>
+                                <li>**Feedback & Future Opportunities:** Engage in feedback sessions and discuss potential future opportunities.</li>
+                            </ol>
+                            <p class="mt-4 font-semibold">Deliverables: Final presentation, Documented GitHub repository with README, Internship completion certificate (if applicable).</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Key Technical Practices -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200">
+                <button class="accordion-button text-xl bg-accent-light text-accent border-b border-gray-200" data-target="technical-practices-content">
+                    <span>4. Key Technical Practices</span>
+                    <svg class="accordion-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                <div id="technical-practices-content" class="accordion-content px-6 py-4">
+                    <p class="mb-4">Throughout the internship, adherence to these practices is crucial for building high-quality software.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>**Clean Architecture:** Design the application with a focus on separation of concerns, making it modular, testable, and maintainable. This typically involves layers for Domain, Application, Infrastructure, and Presentation.</li>
+                        <li>**RESTful API Principles:** Ensure API endpoints are well-designed, consistent, stateless, and adhere to standard HTTP methods and status codes.</li>
+                        <li>**Version Control Best Practices (GitHub):**
+                            <ul class="list-disc list-inside ml-4 mt-1 space-y-1">
+                                <li>Commit frequently with atomic changes and clear messages.</li>
+                                <li>Use feature branches for new development.</li>
+                                <li>Regularly pull `main`/`develop` to stay updated.</li>
+                                <li>Conduct thorough code reviews before merging.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Collaboration Guidelines -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200">
+                <button class="accordion-button text-xl bg-accent-light text-accent border-b border-gray-200" data-target="collaboration-content">
+                    <span>5. Collaboration Guidelines</span>
+                    <svg class="accordion-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                <div id="collaboration-content" class="accordion-content px-6 py-4">
+                    <p class="mb-4">Effective teamwork is paramount for project success.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>**Team Lead:** The designated Team Lead will coordinate task delegation, manage GitHub merging, and track overall progress.</li>
+                        <li>**Backend Developer(s):** Responsible for designing and implementing APIs, database schema, and core business logic.</li>
+                        <li>**Frontend Developer(s):** Focus on building the user interface, handling client-side logic, and ensuring visual consistency.</li>
+                        <li>**Mobile Developer (optional):** If applicable, will integrate the mobile app with the backend APIs and develop mobile-specific UI/UX.</li>
+                        <li>**Communication:** Maintain open and regular communication within the team and with the Head of Software Development. Utilize communication tools for daily stand-ups and problem-solving.</li>
+                        <li>**Code Reviews:** Actively participate in and provide constructive feedback during code review sessions.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Success Metrics & Monitoring -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200">
+                <button class="accordion-button text-xl bg-accent-light text-accent" data-target="metrics-content">
+                    <span>6. Success Metrics & Monitoring</span>
+                    <svg class="accordion-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                <div id="metrics-content" class="accordion-content px-6 py-4">
+                    <p class="mb-4">Your progress and the success of the project will be evaluated based on the following:</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>**Weekly Deliverables:** Timely completion and quality of deliverables for each week.</li>
+                        <li>**GitHub Collaboration:** Active participation in GitHub, including consistent commits, meaningful pull requests, and engagement in code reviews.</li>
+                        <li>**SkillBridge Platform:** Development of a functional, bug-free, and well-documented "SkillBridge" platform.</li>
+                        <li>**Knowledge Acquisition:** Demonstrated clear understanding of RESTful APIs, Git, ASP.NET Core, and optionally mobile development concepts.</li>
+                    </ul>
+                    <p class="mt-4">This plan will be monitored weekly by the Head of Software Development to ensure continuous progress and provide necessary support.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="header-bg text-white mt-12 py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p class="font-bold text-lg">Makhzoumi Foundation</p>
+            <p class="text-sm mt-2 opacity-80">Software Development Internship Program</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    const targetContent = document.getElementById(targetId);
+                    const icon = button.querySelector('.accordion-icon');
+
+                    // Toggle active class for content
+                    targetContent.classList.toggle('active');
+                    // Toggle rotation for icon
+                    icon.classList.toggle('rotate');
+
+                    // Close other top-level accordions if this is a main phase button
+                    if (button.parentElement.classList.contains('bg-white')) {
+                        accordionButtons.forEach(otherButton => {
+                            if (otherButton !== button && otherButton.parentElement.classList.contains('bg-white')) {
+                                const otherTargetId = otherButton.dataset.target;
+                                const otherTargetContent = document.getElementById(otherTargetId);
+                                const otherIcon = otherButton.querySelector('.accordion-icon');
+
+                                otherTargetContent.classList.remove('active');
+                                otherIcon.classList.remove('rotate');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
